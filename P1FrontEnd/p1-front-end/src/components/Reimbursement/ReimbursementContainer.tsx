@@ -64,22 +64,22 @@ export const ReimbursementContainer: React.FC = () => {
 
     return (
         <div className="collection-container">
-            <div>
-                <button onClick={() => navigate("/")}>Back to Login</button>
+            <div className="button-container">
+                <button onClick={() => navigate("/")}>Logout</button>
                 <button onClick={refreshComponent}>Refresh Reimbursements</button>
                 {store.loggedInUser.role === "admin" ? (
                     <button onClick={() => navigate("/users")}>Users</button>
                 ) : null}
             </div>
 
-            <div>
+            <div className="filter-container">
                 <label htmlFor="filter">Show: </label>
                 <select id="filter" value={filter} onChange={(e) => setFilter(e.target.value)}>
                     <option value="all">All Reimbursements</option>
                     <option value="Pending">Pending Reimbursements</option>
                 </select>
             </div>
-
+                
             <Reimbursement reimbs={reimbs} onStatusUpdate={handleStatusChange}/>
             <AddReimb userId={store.loggedInUser.userId} />
         </div>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { UserInterface } from "../../interfaces/UserInterface"
 import { User } from "./User"
+import "./UserContainer.css"
 
 export const UserContainer: React.FC<any> = ({users:any}) => {
 
@@ -28,7 +29,10 @@ export const UserContainer: React.FC<any> = ({users:any}) => {
 
     return(
         <div>
-            <button onClick={()=>navigate("/reimbs")}>See Your Reimbursements</button>
+            <div className="button">
+                <button onClick={()=>navigate("/reimbs")}>See All Reimbursements</button>
+            </div>
+
             <User users={users}></User>
         </div>
     )

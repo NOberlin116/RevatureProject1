@@ -3,6 +3,7 @@ import { UserInterface } from "../../interfaces/UserInterface"
 import { Button, Table } from "react-bootstrap"
 import axios from "axios"
 import { AddReimb } from "../Reimbursement/AddReimb"
+import "./User.css"
 
 
 export const User: React.FC<{users:UserInterface[]}> = ({users}) => {
@@ -72,7 +73,7 @@ export const User: React.FC<{users:UserInterface[]}> = ({users}) => {
                 <></>
             }
 
-            <Table striped bordered hover variant="primary">
+            <Table striped bordered hover variant="dark">
                 <thead>
                     <tr>
                         <th>ID</th>

@@ -24,6 +24,7 @@ export const Reimbursement: React.FC<{reimbs:ReimbInterface[], onStatusUpdate: (
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Username</th>
                         <th>Description</th>
                         <th>Amount</th>
                         <th>Status</th>
@@ -34,6 +35,7 @@ export const Reimbursement: React.FC<{reimbs:ReimbInterface[], onStatusUpdate: (
                     {reimbs.map((reimb, index) => (
                         <tr key={reimb.reimbId}>
                             <td>{reimb.reimbId}</td>
+                            <td>{reimb.user.username}</td>
                             <td>{reimb.description}</td>
                             <td>{reimb.amount}</td>
                             <td>{reimb.status}</td>

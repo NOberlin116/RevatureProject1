@@ -2,6 +2,7 @@ import { FormControl } from "react-bootstrap";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./AddReimb.css"
 
 export const AddReimb: React.FC<{ userId: any }> = ({ userId }) => {
     const [reimb, setReimbs] = useState({

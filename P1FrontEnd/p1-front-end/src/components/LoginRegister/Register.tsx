@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import "./Register.css"
 
 export const Register: React.FC = () => {
 
@@ -40,7 +41,7 @@ export const Register: React.FC = () => {
     }
 
     return(
-        <div>
+        <div className="register">
             <div className="text-container">
                 <h3>Register for a new account here!</h3>
 
@@ -53,7 +54,6 @@ export const Register: React.FC = () => {
 
                 <button className="login-button" onClick={register}>Submit</button>
                 <button className="login-button" onClick={() => navigate("/")}>Back</button>
-
             </div>
         </div>
     )

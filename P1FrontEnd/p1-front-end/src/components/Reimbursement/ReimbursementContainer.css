@@ -1,7 +1,39 @@
 .collection-container{
-    margin:10px;
+    width: 100%;
+    padding-bottom: 100%;
     display:flex;
-    flex-direction:column;
-    align-items:start;
+    align-items: start;
+    flex-direction:row;
     flex-wrap: wrap;
+    background-color: rgb(167, 166, 166);
+}
+.button-container {
+    display: flex;
+    justify-content:space-evenly; 
+    align-items: center; 
+    width: 100%;  
+    margin-left: 500px;
+    margin-right: 500px;
+    margin-top: 5px;
+    background-color: #299296;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.filter-container{
+        display: flex;
+        justify-content: center; 
+        align-items: center; 
+        width: 100%; 
+        margin-bottom: 50px; 
+        margin-left: 500px;
+        margin-right: 500px;
+        background-color: #299296;
+        padding: 10px;
+        border: 1px solid black;
+}
+
+.filter-container label {
+    margin-right: 10px
+    
 }
