@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { UserInterface } from "../../interfaces/UserInterface"
 import { Button, Table } from "react-bootstrap"
 import axios from "axios"
+import { AddReimb } from "../Reimbursement/AddReimb"
 
 
 export const User: React.FC<{users:UserInterface[]}> = ({users}) => {
@@ -43,6 +44,15 @@ export const User: React.FC<{users:UserInterface[]}> = ({users}) => {
 
     }
 
+    const deleteUser = async (userId: number | undefined) => {
+        try {
+            await axios.delete(`http://localhost:8080/users/${userId}`)
+            alert("User and their Reimbursements deleted Successfully")
+        } catch (error) {
+            console.error("Error deleting user: ", error)
+        }
+    }
+
     return(
         <div className="container">
 
@@ -55,7 +65,8 @@ export const User: React.FC<{users:UserInterface[]}> = ({users}) => {
                         setNewUsername(input.target.value)
                     }}/>
                     <button className="m-2" onClick={updateUsername}>Submit</button>
-                    <button className="m-2">Delete</button>
+                    <button className="m-2" onClick={() => deleteUser(selectedUser.userId)}>
+                        Delete</button>
                 </div>
                 :
                 <></>
@@ -76,12 +87,13 @@ export const User: React.FC<{users:UserInterface[]}> = ({users}) => {
                             <td >{user.userId}</td>
                             <td>{user.username}</td>
                             <td>{user.role}</td>
-                            <td><Button variant="outline-danger">Fire User</Button></td>
+                            <td>
+                                <Button variant="outline-danger">Alter User</Button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
-
         </div>
     )
 }

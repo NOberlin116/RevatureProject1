@@ -19,8 +19,6 @@ export const Login: React.FC = () => {
 
     const storeValues = (input:any) => {
  
-
- 
         if(input.target.name === "username"){
             setUser((user) => ({...user, username:input.target.value}))
         } else {
@@ -44,7 +42,7 @@ export const Login: React.FC = () => {
                 alert("Welcome, " + store.loggedInUser.username)
 
                 if(response.data.role === "user"){
-                    navigate("/cars")
+                    navigate("/reimbs")
                 } 
 
                 if(response.data.role === "admin"){

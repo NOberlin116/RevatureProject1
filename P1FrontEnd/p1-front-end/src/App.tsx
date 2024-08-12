@@ -6,9 +6,10 @@ import { Login } from './components/LoginRegister/Login';
 import { Register } from './components/LoginRegister/Register';
 import { Reimbursement } from './components/Reimbursement/Reimbursement';
 import { ReimbursementContainer } from './components/Reimbursement/ReimbursementContainer';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Importing Bootstrap CSS globally
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { AddReimb } from './components/Reimbursement/AddReimb';
 import { UserContainer } from './components/User/UserContainer';
+import { store } from './globalData/store';
 
 function App() {
   return (
@@ -17,8 +18,8 @@ function App() {
           <Routes>
               <Route path="" element={<Login/>}/>
               <Route path="/register" element={<Register/>}/>
-              <Route path="/cars" element={<ReimbursementContainer/>}/>
-              <Route path="/addcar" element={<AddReimb/>}/>
+              <Route path="/reimbs" element={<ReimbursementContainer/>}/>
+              <Route path="/addReimb" element={<AddReimb userId={store.loggedInUser.userId}/>}/>
               <Route path="/users" element={<UserContainer/>}/>
           </Routes>
       </BrowserRouter>

@@ -1,18 +1,18 @@
 import { Button, Table } from "react-bootstrap"
 import { ReimbInterface } from "../../interfaces/ReimbInterface"
-//Note: we took out the CSS import, as we're using bootstrap
 import { useEffect } from "react"
 import { store } from "../../globalData/store"
+import { ReimbursementStatusUpdater } from "./ReimbursementStatusUpdater"
 
 
-//We're destructuring the cars array as props in a different way here (in the generic)
-//this will allow us to easily access the Array in the .map() function
-export const Reimbursement: React.FC<{reimbs:ReimbInterface[]}> = ({reimbs}) => {
+export const Reimbursement: React.FC<{reimbs:ReimbInterface[], onStatusUpdate: () => void}> = ({reimbs, onStatusUpdate}) => {
 
+
+    const isAdmin = store.loggedInUser.role === "admin"
     //just to see the data in the console
     useEffect(()=>{
         console.log(reimbs)
-    }, [])
+    }, [reimbs])
 
 
     return(
@@ -27,6 +27,7 @@ export const Reimbursement: React.FC<{reimbs:ReimbInterface[]}> = ({reimbs}) => 
                         <th>Description</th>
                         <th>Amount</th>
                         <th>Status</th>
+                        {isAdmin && <th>Actions</th>}
                     </tr>
                 </thead>
                 <tbody>
@@ -36,6 +37,16 @@ export const Reimbursement: React.FC<{reimbs:ReimbInterface[]}> = ({reimbs}) => 
                             <td>{reimb.description}</td>
                             <td>{reimb.amount}</td>
                             <td>{reimb.status}</td>
+                            {isAdmin && (
+                                <td>
+                                    <ReimbursementStatusUpdater
+                                        reimbId={reimb.reimbId}
+                                        currentStatus={reimb.status}
+                                        userRole={store.loggedInUser.role}
+                                        onStatusUpdate={onStatusUpdate}
+                                    />
+                                </td>
+                            )}
                         </tr>
                     ))}
                 </tbody>

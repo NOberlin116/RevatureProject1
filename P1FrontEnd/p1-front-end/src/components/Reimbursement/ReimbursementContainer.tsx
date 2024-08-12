@@ -1,49 +1,87 @@
-import axios, { AxiosResponse } from "axios"
-import { useEffect, useState } from "react"
-import { Reimbursement } from "./Reimbursement"
-import { ReimbInterface } from "../../interfaces/ReimbInterface"
-import "./ReimbursementContainer.css"
-import { useNavigate } from "react-router-dom"
-import { store } from "../../globalData/store"
-
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Reimbursement } from "./Reimbursement";
+import { ReimbInterface } from "../../interfaces/ReimbInterface";
+import "./ReimbursementContainer.css";
+import { useNavigate } from "react-router-dom";
+import { store } from "../../globalData/store";
+import { AddReimb } from "./AddReimb";
 
 export const ReimbursementContainer: React.FC = () => {
+    const [reimbs, setReimbs] = useState<ReimbInterface[]>([]);
+    const [filter, setFilter] = useState("all");
+    const [refresh, setRefresh] = useState(false);
 
-    const [reimbs, setReimbs] = useState<ReimbInterface[]>([])
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     useEffect(() => {
-        getAllReimbs()
-    }, [])
+        console.log("UserId: ", store.loggedInUser.userId)
+        getReimbs();
+    }, [filter, refresh]); // Fetch reimbursements when filter, sort, or refresh changes
 
-    const getAllReimbs = async () => {
+    const getReimbs = async () => {
+        try {
+            // Base URL with filter for status
+            let url = `http://localhost:8080/reimbs?status=${filter}`;
+            console.log("User ID: ", store.loggedInUser.userId)
+            // Append userId if the user is not an admin
+            if (store.loggedInUser.role !== "admin") {
+                url += `&userId=${store.loggedInUser.userId}`;
+            }
+    
+            console.log("Fetching URL:", url);  // Log URL to verify
+    
+            // Fetch data from API
+            const response = await axios.get(url);
+            console.log("API Response Data:", response.data);  // Log response data
+    
+            let allReimbs = response.data;
+            console.log("Reimbs from Back: ", allReimbs)
+            if (store.loggedInUser.role === "user") {
+                allReimbs = allReimbs.filter((reimb: ReimbInterface) => reimb.user.userId === store.loggedInUser.userId);
+            }
+            // Apply filtering based on status
+            if (filter === "Pending") {
+                allReimbs = allReimbs.filter((reimb: ReimbInterface) => reimb.status === "Pending");
+            }
+            // Set state with filtered reimbursements
+            setReimbs(allReimbs);
+            console.log('Filtered reimbursements:', allReimbs);
+        } catch (error) {
+            console.error("Error fetching reimbursements:", error);
+        }
+    };
+    
+    
 
-        //TODO: send withCredentials to confirm the user is logged in)
-        const response = await axios.get("http://localhost:8080/reimbs/" + store.loggedInUser.userId)
+    const refreshComponent = () => {
+        setRefresh(prev => !prev);
+    };
 
-        setReimbs(response.data)
-
-        console.log(response.data)
-
+    function handleStatusChange(): void {
+        throw new Error("Function not implemented.");
     }
 
-    return(
+    return (
         <div className="collection-container">
+            <div>
+                <button onClick={() => navigate("/")}>Back to Login</button>
+                <button onClick={refreshComponent}>Refresh Reimbursements</button>
+                {store.loggedInUser.role === "admin" ? (
+                    <button onClick={() => navigate("/users")}>Users</button>
+                ) : null}
+            </div>
 
-        <div>
-            <button onClick={() => navigate("/")}>Back to Login</button>
-            <button onClick={() => navigate("/addreimb")}>Add New Reimbursement</button>
-            <button>Profile</button>
-            {store.loggedInUser.role === "admin" ? <button onClick={() => navigate("/users")}>Users</button> : <></>}
+            <div>
+                <label htmlFor="filter">Show: </label>
+                <select id="filter" value={filter} onChange={(e) => setFilter(e.target.value)}>
+                    <option value="all">All Reimbursements</option>
+                    <option value="Pending">Pending Reimbursements</option>
+                </select>
+            </div>
+
+            <Reimbursement reimbs={reimbs} onStatusUpdate={handleStatusChange}/>
+            <AddReimb userId={store.loggedInUser.userId} />
         </div>
-
-            {/* Sending the entire cars array to get rendered in the Car component table*/}
-            <Reimbursement reimbs = {reimbs}></Reimbursement>
-
-
-            {/*If you need to render multiple elements in map(), they need to be in a <div> */}
-
-        </div>
-    )
-}
+    );
+};
