@@ -1,7 +1,9 @@
 package com.Revature.P1BackEnd.services;
 
+import com.Revature.P1BackEnd.DAOs.ReimbDAO;
 import com.Revature.P1BackEnd.DAOs.UserDAO;
 import com.Revature.P1BackEnd.models.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +12,11 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
+    @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private ReimbDAO rDAO;
+    private ReimbService rs;
 
     @Autowired
     public UserService(UserDAO userDAO) {
@@ -46,5 +51,10 @@ public class UserService {
             //TODO: probably throw an exception
             return null;
         }
+    }
+    @Transactional
+    public void deleteUserAndReimbs(int userId) {
+        rDAO.deleteByUserUserId(userId);
+        userDAO.deleteById(userId);
     }
 }

@@ -26,7 +26,7 @@ public class User {
     private String role;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reimbursement> reimbursements;
 
     public User() {

@@ -8,13 +8,14 @@ import com.Revature.P1BackEnd.services.ReimbService;
 import com.Revature.P1BackEnd.services.UserService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/reimbursements")
+@RequestMapping("/reimbs")
 @CrossOrigin
 public class ReimbController {
 
@@ -54,4 +55,26 @@ public class ReimbController {
     public ResponseEntity<List<Reimbursement>> getReimbursementsByUserId(@PathVariable int userId) {
         return ResponseEntity.ok(rs.getReimbursementsByUserId(userId));
     }
+
+    @PutMapping("/{reimbId}/status")
+    public ResponseEntity<Reimbursement> updateReimbursementStatus (
+            @PathVariable int reimbId,
+            @RequestParam String status
+    ) {
+        Reimbursement reimb = rs.updateReimbStatus(reimbId, status);
+        if (reimb != null) {
+            return ResponseEntity.ok(reimb);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+    @GetMapping("/reimbs")
+    public List<Reimbursement> getReimbursements(@RequestParam String status, @RequestParam(required = false) Integer userId) {
+        if (userId != null) {
+            return rs.getReimbursementsByUserIdAndStatus(userId, status);
+        } else {
+            return rs.getAllReimbursementsByStatus(status);
+        }
+    }
+
 }
